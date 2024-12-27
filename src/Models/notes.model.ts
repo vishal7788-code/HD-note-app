@@ -19,6 +19,7 @@ const noteSchema: Schema<INote> = new mongoose.Schema(
     },
     isDelete: {
       type: Boolean,
+      default: false,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
