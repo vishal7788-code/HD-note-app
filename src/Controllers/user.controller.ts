@@ -72,7 +72,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         .status(200)
         .cookie("token", token, {
           httpOnly: true,
-          sameSite: "lax",
+          sameSite: "none",
           secure: true,
           path: "/",
           maxAge: 24 * 60 * 60 * 1000,
