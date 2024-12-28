@@ -72,7 +72,8 @@ export const deleteNote = async(req:Request, res:Response) : Promise<void> => {
 }
 export const getAllNotes = async(req:Request, res:Response): Promise<void> => {
     try {
-        const userId=req.id;
+        const userId=req.params.id;
+        const noteId = req.id;
         if(!userId){
             res.status(400).json({
                 message:"User Id is required.",
@@ -80,7 +81,7 @@ export const getAllNotes = async(req:Request, res:Response): Promise<void> => {
             })
             return;
         }
-        const notes= await Note.find({user:userId, isDelete:false})
+        const notes= await Note.find({ user:userId, isDelete:false})
         res.status(200).json({
             message:"Notes fetched successfully.",
             success:true,

@@ -142,7 +142,7 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
       }
       // to create JWT token
       const tokenData = {
-        userId: user.id,
+        userId: user._id,
       };
       const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY as string, {
         expiresIn: "1d",
@@ -160,6 +160,7 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
         .json({
           message: `Welcome back ${user.name}.`,
           user: {
+            userId: user._id,
             name: user.name,
             email: user.email,
           },
