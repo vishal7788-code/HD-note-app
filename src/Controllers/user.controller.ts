@@ -6,7 +6,7 @@ import { otpStore } from "../utils/send-otp";
 // Signup Functionality
 export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
-    // to check that all fileds are provided
+
     const { name, email, dateOfBirth, otp } = req.body;
     if (!name || !email || !dateOfBirth) {
       res.status(400).json({
@@ -15,9 +15,9 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
       });
       return;
     }
-    // to check if user already exists
+
     const user = await User.findOne({ email });
-    // code to check OTP validation and expiry
+
     if (otp) {
       const storedOtp = otpStore.get(email);
 
@@ -36,8 +36,9 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         });
         return;
       }
-      if (storedOtp.expiresAt < new Date()) {
-        otpStore.delete(email); // Delete expired OTP
+      // Check if the OTP has expired
+      if (storedOtp.expiresAt < new Date()) { 
+        otpStore.delete(email);
         res.status(400).json({
           message: "OTP has expired. Please request a new one.",
           success: false,
@@ -71,7 +72,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         .status(200)
         .cookie("token", token, {
           httpOnly: true,
-          sameSite: "none",
+          sameSite: "lax",
           secure: true,
           path: "/",
           maxAge: 24 * 60 * 60 * 1000,
@@ -79,6 +80,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         .json({
           message: `Signup successfull.`,
           user: {
+          userId: newUser.id,
             name,
             email,
           },
@@ -190,7 +192,7 @@ export const signout = async (req: Request, res: Response): Promise<void> => {
         sameSite: "none",
         secure: true,
         path: "/",
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 0,
       })
       .json({
         message: "Logged out successfully.",
