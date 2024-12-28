@@ -13,7 +13,7 @@ dotenv.config({});
 app.use(express.json())
 app.use(cookieParser());
 const corsOptions = {
-    origin: "https://hd-note-app.vercel.app/",
+    origin: "https://hd-note-app.vercel.app",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE' ],
     allowedHeaders: ['Content-Type', 'Authorization'],
